@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
-use Illuminate\Http\Request;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -28,7 +28,7 @@ class CategoryController extends Controller
     /**
      * カテゴリーを新規作成
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         Category::create($request->validated());
 
@@ -39,7 +39,7 @@ class CategoryController extends Controller
     /**
      * カテゴリー詳細を表示
      */
-    public function show(string $id)
+    public function show(Category $category)
     {
         $category->load('tasks');
 
@@ -49,7 +49,7 @@ class CategoryController extends Controller
     /**
      * カテゴリー編集フォームを表示
      */
-    public function edit(string $id)
+    public function edit(Category $category)
     {
         return view('categories.edit', compact('category'));
     }
@@ -57,7 +57,7 @@ class CategoryController extends Controller
     /**
      * カテゴリーを更新
      */
-    public function update(Request $request, string $id)
+    public function update(CategoryRequest $request, Category $category)
     {
         $category->update($request->validated());
 
@@ -68,9 +68,9 @@ class CategoryController extends Controller
     /**
      * カテゴリーを削除
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
     {
-        //カテゴリーに紐づくタスクがある場合は削除不可
+        // カテゴリーに紐づくタスクがある場合は削除不可
         if ($category->tasks()->count() > 0) {
             return redirect()->route('categories.index')
                 ->with('error', 'タスクが紐づいているカテゴリーは削除できません。');
@@ -82,3 +82,4 @@ class CategoryController extends Controller
             ->with('success', 'カテゴリーを削除しました。');
     }
 }
+
