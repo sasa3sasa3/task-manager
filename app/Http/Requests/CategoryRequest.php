@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CategoryRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class CategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -20,7 +21,7 @@ class CategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-             'name' => [
+            'name' => [
                 'required',
                 'string',
                 'max:255',
@@ -29,7 +30,7 @@ class CategoryRequest extends FormRequest
         ];
     }
 
-     /**
+    /**
      * バリデーションメッセージ
      */
     public function messages(): array
